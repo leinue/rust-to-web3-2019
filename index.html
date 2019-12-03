@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Rust、跨链到 Web3 的开源世界：SoLiD 社交互联数据 - 万维网之父的数据主权革命</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <link rel="stylesheet" href="styles/screen-16x10.css">
+  <link rel="stylesheet" href="styles/custom.css">
+</head>
+<body class="shower list">
+  <header class="caption">
+    <h1>Rust、跨链到 Web3 的开源世界：<br> SoLiD - 万维网之父的数据主权革命</h1>
+    <p>
+      <a href="http://ivydom.com/">谢扬</a>,
+      <a href="https://authing.cn/">创始人 @ 蒸汽记忆</a> /
+      <a href="https://learnsolid.cn/">发起人 @ SoLiD 中文社区</a>
+    </p>
+    <p class="venue">
+      <a href="https://www.meetup.com/Solid-London/events/260820462/">杭州</a>, 2019-12-04
+    </p>
+  </header>
+
+  <div class="title slide" id="title">
+    <h2 style="font-size:1.9em">Rust、跨链到 Web3 的开源世界<br> <em>万维网之父的数据主权革命</em></h2>
+    <p class="author">谢扬</p>
+    <p class="affiliation">创始人 @ 蒸汽记忆 / 发起人 @ SoLiD 中文社区</p>
+  </div>
+
+  <div class="slide" id="about-me">
+      <h2>
+        About me<br>
+      </h2>
+      <ul>
+        <li class="next">
+          谢扬
+          <ul>
+            <li>
+              互联网之子，蒸汽记忆创始人 / SoLiD 中文网发起人
+            </li>
+          </ul>
+        </li>
+        <li class="next">
+          经历<br>
+          <ul class="next">
+            <li>知识图谱、Web 全栈开发者</li>
+            <li>产品设计师、系统架构师、中二病晚期</li>
+            <li>曾任好东西传送门 CTO、字节跳动 Hacker</li>
+          </ul>
+        </li>
+        <li class="next">
+            信仰<br>
+            <ul class="next">
+              <li>共产主义</li>
+            </ul>
+          </li>        
+      </ul>
+  </div>
+
+  <div class="cover slide" id="react">
+    <h2>
+      万维网之父
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/web-inventor.png" alt="">
+    </figure>
+  </div>
+
+  <div class="text slide" id="for-everyone">
+    <blockquote class="twitter-tweet">
+      <p>This is for everyone <a href="https://twitter.com/hashtag/london2012?src=hash">#london2012</a> <a href="https://twitter.com/hashtag/oneweb?src=hash">#oneweb</a> <a href="https://twitter.com/hashtag/openingceremony?src=hash">#openingceremony</a> <a href="https://twitter.com/webfoundation">@webfoundation</a> <a href="https://twitter.com/w3c">@w3c</a></p>
+      <cite>Tim Berners-Lee</cite>
+      <a href="https://twitter.com/timberners_lee/status/228960085672599552">July 27, 2012</a>
+    </blockquote>
+    <figure class="cover width">
+      <img class="faded" src="images/cake.jpg" alt="[photo of a birthday cake]">
+      <figcaption>
+        ©2017 <a href="https://www.flickr.com/photos/darkdwarf/34851504355/">Dark Dwarf</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="cover slide" id="web-we-have-to-save">
+    <figure class="cover width">
+      <img src="images/web-we-have-to-save.jpg" alt="">
+      <figcaption>
+        © <a href="https://medium.com/matter/the-web-we-have-to-save-2eb1fe15a426">Tim McDonagh</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="text slide" id="reshape">
+    <p>
+      我们依托 SoLiD，<br>
+      重构「人与数据」和「人与应用」之间的关系<br>
+    </p>
+    <p class="next">
+      SoLiD 为 Web 提供了<br>
+      全新的<em>选择</em>
+    </p>
+    <figure class="cover width">
+      <img class="faded" src="images/choice.jpg" alt="">
+      <figcaption>
+        ©2018 <a href="https://www.flickr.com/photos/126435840@N03/43637479534/">Skyler King</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="toc slide" id="toc-universality">
+    <ul>
+      <li class="current"><a href="#toc-universality">Web 的原初构想</a></li>
+      <li><a href="#toc-apps-data-people">SoLiD 对应用、数据和用户之间关系的变革</a></li>
+      <li><a href="#toc-developer-experience">开发者体验</a></li>
+      <li><a href="#toc-developer-experience">Web 的未来</a></li>
+    </ul>
+  </div>
+
+  <div class="slide" id="universality">
+    <h2>
+      Web 生来就是一个 <em>通用</em> 的平台<br>
+    </h2>
+    <ul>
+      <li>
+        每个人都可以自由的通过各种平台访问 Web：
+        <dl>
+          <dt>硬件</dt>
+          <dd>PC</dd>
+          <dd>手机</dd>
+          <dd>笔记本电脑</dd>
+          <dd>智能手表</dd>
+          <dd>…</dd>
+
+          <dt>软件</dt>
+          <dd>操作系统</dd>
+          <dd>浏览器</dd>
+          <dd>移动 APP</dd>
+          <dd>…</dd>
+        </dl>
+      </li>
+      <li class="next">
+        开发者可以毫无限制的基于 Web 进行创新
+        <ul>
+          <li>共建 Web 生态</li>
+          <li>统一的 W3C 标准决定了 Web 的互操作性</li>
+        </ul>
+      </li>
+    </ul>
+    <figure class="cover width">
+      <img class="faded" src="images/kids.jpg" alt="">
+      <figcaption>
+        ©2008 <a href="https://www.flickr.com/photos/lupuca/8720604364/">Lucélia Ribeiro</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="slide" id="freedom-of-expression">
+    <h2>
+      Web 给予了所有人<em>自由发声</em> 的机会<br>
+    </h2>
+    <ul>
+      <li class="next">
+        <q>每个人都可以对任何事情做评论</q>
+      </li>
+      <li class="next">
+        每个人都有自己的 Web 空间<br>
+        所以我们不需要去做任何妥协（Before 移动互联网）
+      </li>
+      <li class="next">
+        我们可以通过 <em>超链接</em> 访问无穷无尽的网站<br>
+        并在这些网站里发表评论和观点
+      </li>
+    </ul>
+    <figure class="cover width">
+      <img class="faded" src="images/freedom-of-speech.jpg" alt="">
+      <figcaption>
+        ©2012 <a href="https://www.flickr.com/photos/33718942@N07/7728249250/">Luke McKernan</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="cover slide" id="blogging">
+    <h2>
+      互联网用户建立自己的网站和博客，<br>
+      用他们喜欢的方式分享他们的知识、见解和故事
+    </h2>
+    <figure class="cover width">
+      <img src="images/blogging.jpg" alt="">
+      <figcaption>
+        ©2012 <a href="https://www.flickr.com/photos/gonzo_photo/2947283859/">Gregor Fischer</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="slide" id="web2.0">
+    <h2>
+      由此产生了很多社交平台连接用户<br>
+      这些社交平台的初衷是帮助他们交流
+    </h2>
+    <figure class="cover width">
+      <img src="images/web2.0.svg" alt="">
+    </figure>
+  </div>
+
+  <div class="slide" id="permissionless-innovation">
+    <h2>
+      Web 为全球创意工作者带来<em>无门槛的创新体验</em><br>
+    </h2>
+    <ul>
+      <li class="next">
+        每个人都可以通过 Web 将自己伟大的想法分发到全世界
+      </li>
+      <li class="next">
+        Web 开发者不需要获得任何人的许可<br>
+        就可以随时随地发布自己的创意
+        <ul>
+          <li class="next">
+            不是像 <em>APP Stores</em> 和<em>小程序</em> 那样需要审核
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <figure class="cover width">
+      <img class="faded" src="images/innovation.jpg" alt="">
+      <figcaption>
+        ©2012 <a href="https://www.flickr.com/photos/sparkfun/8167728006/">SparkFun Electronics</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="slide" id="unprecedented-creativity">
+    <h2>
+      无门槛的创新为全球带来了前所未有的创意力量<br>
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/logos.svg" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="centralization">
+    <h2>
+      同时我们的数据变得越来越中心化<br>
+      —— 全部集中在巨头手中
+    </h2>
+    <ul>
+      <li class="next">
+        用户的个人博客<br>
+        现在在微信和微博上
+        <ul>
+          <li class="next">良好的用户体验</li>
+          <li class="next">但是我们失去了控制权</li>
+        </ul>
+      </li>
+      <li class="next">
+        越来越严重的隐私泄漏问题
+      </li>
+      <li class="next">
+        严重危害了 Web 的 <a href="#universality">通用性</a>
+        <ul>
+          <li class="next"><q>使用微信登录</q><li>
+          <li class="next"><q>微信小程序</q><li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="dark cover slide" id="walled-gardens">
+    <h2>
+      社交媒体之间高墙树立，<br>
+      你无法自由移动数据和社交关系
+    </h2>
+    <figure class="cover width">
+      <img src="images/walled-gardens.jpg">
+      <figcaption>
+        © David Simonds
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="slide" id="centralization-consequences">
+    <h2>
+      当前巨大的难以撼动的中心化趋势<br>
+      严重伤害了多元性、创新性和选择性。
+    </h2>
+    <ul>
+      <li class="next">
+        如果你只能创建一个 API 应用
+        <ul>
+          <li>
+            你会做 <em>weixin.com</em>
+            还是 <em>identity-provider.org</em>？
+          </li>
+        </ul>
+      </li>
+      <li class="next">
+        开发者全部依靠 <em>中心化平台</em> 来管理数据和身份<br>
+        <ul class="next">
+          <li>创业公司长大后受资本驱动也成为了中心化平台的一份子</li>
+        </ul>
+      </li>
+      <li class="next">
+        用户失去了自己对数据和身份的控制权<br>
+        同时也无法轻松的将数据在各个应用间转移
+        <ul>
+          <li>创新逐渐闭塞，无法吸引更多有才华的人参与其中 </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="toc slide" id="toc-apps-data-people">
+    <ul>
+      <li><a href="#toc-universality">Web 的原初构想</a></li>
+      <li class="current"><a href="#toc-apps-data-people">SoLiD 对应用、数据和用户之间关系的变革</a></li>
+      <li><a href="#toc-developer-experience">开发者体验</a></li>
+      <li><a href="#toc-developer-experience">Web 的未来</a></li>  
+    </ul>
+  </div>
+
+  <div class="text slide" id="summary">
+    <p>
+      SoLiD 是另一个 <em>选项</em>。
+    </p>
+    <p class="next">
+      SoLiD 生态允许 <em>用户</em><br>
+      在控制自己数据的情况下 <br>
+      无限制切换和使用他们需要的 <em>应用</em>，
+    </p>
+    <p class="next">
+      用户可以控制、授权自己的数据<br>
+      给任何人和任何应用</span>
+    </p>
+    <figure class="cover width">
+      <img class="faded" src="images/apple-picking.jpg" alt="">
+      <figcaption>
+        ©2007 <a href="https://www.flickr.com/photos/lien/1480417999/">plien</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="cover slide" id="what-is-solid">
+    <h2>
+      SoLiD 的三个核心概念
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/what-is-solid.png" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="what-is-solid">
+    <h2>
+      What is Pod
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/what-is-pod.png" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="what-is-ontology">
+    <h2>
+      What is 本体(Ontology)
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/what-is-ontology.png" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="what-is-social">
+    <h2>
+      What is Social
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/what-is-social.png" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="what-is-linked-data">
+    <h2>
+      What is Linked data
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/what-is-linked-data.png" alt="">
+    </figure>
+  </div>
+
+  <div class="text slide" id="three">
+    <p>
+    </p>
+    <p style="font-size: 2.5em">
+      SoLiD 将带来三种<br>
+      应用开发范式颠覆
+    </p>
+  </div>  
+
+  <div class="slide" id="decentralized-data">
+    <h2>
+      用户自己决定自己生产的数据存在哪<br>
+    </h2>
+    <figure class="cover height margin">
+      <img src="images/decentralized-data.svg" alt="">
+    </figure>
+  </div>
+
+  <div class="slide" id="views">
+    <h2>
+      用户可以授权哪些人、哪些应用有权访问他们的数据<br>
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/apps-as-views.svg" alt="">
+    </figure>
+  </div>
+
+  <div class="slide" id="markets">
+    <h2>
+      应用和数据分离后的 Web 将驱动新一轮创新
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/data-and-app-markets.svg" alt="">
+    </figure>
+  </div>
+
+  <div class="slide" id="solid-logo">
+    <figure class="cover height">
+      <img src="images/solid-logo.svg" alt="[the Solid logo]" />
+    </figure>
+  </div>
+
+  <div class="slide" id="solid">
+    <h2>
+      SoLiD 不是一家公司或组织<br>
+      SoLiD 不（仅仅）是一个软件
+    </h2>
+    <ul>
+      <li>
+        SoLiD 是一个生态
+        <ul>
+          <li class="next">通用的规范</li>
+        </ul>
+      </li>
+      <li>
+        SoLiD 是一场革命
+        <ul>
+          <li class="next">全新的应用开发范式</li>
+        </ul>
+      </li>
+      <li>
+        SoLiD 是一个社区
+        <ul>
+          <li class="next">不同国籍、肤色、性别的人、不同的企业、不同的组织</li>
+        </ul>
+      </li>
+    </ul>
+    <figure class="cover height">
+      <img class="faded" src="images/solid-logo.svg" alt="[the Solid logo]" />
+    </figure>
+  </div>
+
+  <div class="slide" id="open">
+    <h2>
+      每个人都可以搭建 SoLiD 服务器或使用 SoLiD 开发应用<br>
+    </h2>
+    <ul>
+      <li class="next">
+        一台在智能音箱里的服务器<br>
+      </li>
+      <li class="next">
+        现成的云服务
+      </li>
+      <li class="next">
+        免费的社区版本
+      </li>
+    </ul>
+  </div>
+
+  <div class="slide" id="server">
+    <h2>
+      SoLiD 服务器主要是作为数据 Pod<br>
+      用来管理和守卫数据
+    </h2>
+    <ul>
+      <li class="next">
+       一个通常意义上的 HTTP Server
+        <ul>
+          <li>支持 Access Control</li>
+          <li>支持 Linked Data</li>
+          <li>支持 OIDC</li>
+        </ul>
+      </li>
+      <li class="next">
+       通用应用程序开发平台
+        <ul>
+          <li>构建 <em>任意</em> 应用</li>
+          <li>将业务逻辑转移到前端</li>
+        </ul>
+      </li>
+      <li class="next">
+        就像你的个人网站一样
+        <ul>
+          <li>你的数据可以被任意 APP 重复使用</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="slide" id="data-pod">
+    <h2>
+      一个典型的 Data Pod 可以存储任意数据<br>
+    </h2>
+    <ul style="margin-top:-22px">
+      <li>个人资料 👤</li>
+      <li>照片 🖼</li>
+      <li>评论 🗣</li>
+      <li>点赞 👍</li>
+      <li>好友关系 👥</li>
+      <li>… ✨</li>
+    </ul>
+  </div>
+
+  <div class="slide" id="client">
+    <h2>
+      SoLiD 客户端是浏览器应用或者移动原生应用<br>
+      这些应用都从你自己的 Pod 中读取数据。
+    </h2>
+    <ul>
+      <li class="next">
+        你授权应用权限
+        <ul>
+          <li>可以进行非常细粒度的授权</li>
+        </ul>
+      </li>
+      <li class="next">
+        你的好友给你授予权限
+        <ul>
+          <li>可以进行非常细粒度的授权</li>
+        </ul>
+      </li>
+      <li class="next">
+        应用提供统一的用户体验
+        <ul>
+          <li>浏览你朋友的照片和你自己的照片</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="slide" id="apps">
+    <h2>
+      任何你能想到的应用，都可以使用 SoLiD 开发
+    </h2>
+    <ul>
+      <li>日程应用 📅</li>
+      <li>社交应用 👥</li>
+      <li>图片分享软件 📸</li>
+      <li>会议管理软件 🎤</li>
+      <li>… ✨</li>
+    </ul>
+  </div>
+
+  <div class="slide" id="public-spaces">
+      <h2 class="short">
+        PublicSpaces captures principles<br>
+        to serve the common interest.
+      </h2>
+      <ul>
+        <li><a href="#open">Open</a></li>
+        <li><a href="#transparent">Transparent</a></li>
+        <li><a href="#accountable">Accountable</a></li>
+        <li><a href="#sovereign">Sovereign</a></li>
+        <li><a href="#user-centric">User Centric</a></li>
+      </ul>
+    </div>
+  
+    <div class="slide" id="open">
+      <h2 class="short">
+        PublicSpaces principle: <em>Open</em>
+      </h2>
+      <ul>
+        <li class="next">
+          The software ecosystem is equally accessible<br>
+          to any person, network or organisation.
+        </li>
+        <li class="next">
+          The software ecosystem operates independently<br>
+          from any government, commercial<br>
+          or particular political influence.
+        </li>
+      </ul>
+    </div>
+  
+    <div class="slide" id="transparent">
+      <h2 class="short">
+        PublicSpaces principle: <em>Transparent</em>
+      </h2>
+      <ul>
+        <li class="next">
+          The used technology is fully accessible<br> and reviewable.
+        </li>
+        <li class="next">
+          Governance of the software ecosystem<br>
+          will be fully reviewable.
+        </li>
+      </ul>
+    </div>
+  
+    <div class="slide" id="accountable">
+      <h2 class="short">
+        PublicSpaces principle: <em>Accountable</em>
+      </h2>
+      <ul>
+        <li class="next">
+          Users are verified and provenance of content<br>
+          can be fully disclosed.
+        </li>
+        <li class="next">
+          The ecosystem offers the highest possible guarantee<br>
+          of protection of data—both of content and users.
+        </li>
+        <li class="next">
+          The software ecosystem does not hold or own<br>
+          any personal data of its users.
+        </li>
+        <li class="next">
+          Governance of the software ecosystem is bound by<br>
+          the founding statutes that guarantee independence<br>
+          of commercial and political influences.
+        </li>
+      </ul>
+  </div>  
+
+  <div class="slide" id="sovereign">
+      <h2 class="short">
+        SoLiD principle: <em>Sovereign</em>
+      </h2>
+      <ul>
+        <li class="next">
+          Users are not products—<br>the wellbeing and empowerment of users<br>
+          will always be the primary concern.
+        </li>
+        <li class="next">
+          Users have full control over<br>
+          their personal data,<br>
+          their content and interactions.
+        </li>
+      </ul>
+  </div>
+  
+  <div class="slide" id="user-centric">
+      <h2 class="short">
+          SoLiD principle: <em>User Centric</em>
+      </h2>
+    <ul>
+        <li class="next">
+          The software ecosystem employs<br>
+          <em>privacy by design</em><br>
+          as a basic design principle.
+        </li>
+        <li class="next">
+          The software ecosystem uses the tenets of<br>
+          the <em>Time well spent</em> movement<br>
+          as guidelines for any implementation.
+        </li>
+    </ul>
+  </div>  
+
+  <div class="toc slide" id="toc-developer-experience">
+    <ul>
+      <li><a href="#toc-universality">Web 的原初构想</a></li>
+      <li><a href="#toc-apps-data-people">SoLiD 对应用、数据和用户之间关系的变革</a></li>
+      <li class="current"><a href="#toc-developer-experience">开发者体验</a></li>
+      <li><a href="#toc-developer-experience">Web 的未来</a></li>
+    </ul>    
+  </div>
+
+  <div class="slide" id="multiple-backends">
+    <h2>
+      SoLiD 应用拥有多个后端，一个后端与多个应用进行交互。
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/multiple-backends.svg" alt="">
+    </figure>
+  </div>
+
+  <div class="slide" id="linked-data">
+    <h2>
+      SoLiD 使用 Linked Data 和 RDF 解决互操作性问题
+    </h2>
+    <ul>
+      <li>
+        <em>
+          如果我们存储了你的数据，<br>
+          <span class="next">我们怎么和其他数据进行<a href="#linking">互联</a></span>
+        </em>
+      </li>
+      <li>
+        <em>
+          应用之间无摩擦的实现数据<a href="#semantics">共享</a>，<br>
+          <span class="next">在不需要改动代码的情况如何实现？</span>
+        </em>
+      </li>
+      <li>
+        <em>
+          如何在多个 Pod 之间对数据进行<a href="#integration">联合查询？</a>
+        </em>
+      </li>
+    </ul>
+  </div>
+
+  <div class="slide" id="linking">
+    <h2>
+      使用 JSON-LD，每片数据都可以和另一片数据进行互联<br>
+    </h2>
+    <pre><code>{
+  <span class="prefix">"@context":  "https://www.w3.org/ns/activitystreams",</span>
+  "id":        "#xieyang-likes-FCCFullStack2019",
+  "type":      "Like",
+  "actor":     "<mark>http://ivydom.com/profile/#me</mark>",
+  "object":    "<mark>https://www.meetup.com/FCCFullStack2019/#this</mark>",
+  "published": "2019-11-16T18:00:00Z"
+}</code></pre>
+  </div>
+
+  <div class="slide" id="semantics">
+    <h2>
+      数据片段和他们的语义化实现了互相兼容<br>
+    </h2>
+    <pre><code>{
+  <span class="prefix">"@context":  "https://www.w3.org/ns/activitystreams",</span>
+  "id":        "#xieyang-likes-FCCFullStack2019",
+  "<mark>type</mark>":      "<mark>Like</mark>",
+  "<mark>actor</mark>":     "http://ivydom.com/profile/#me",
+  "<mark>object</mark>":    "https://www.meetup.com/FCCFullStack2019/#this",
+  "<mark>published</mark>": "2019-11-16T18:00:00Z"
+}</code></pre>
+  </div>
+
+  <div class="slide" id="integration">
+    <h2>
+      不同的数据源都可以被串联起来<br>
+    </h2>
+    <pre><code>{
+  <span class="prefix">"@context":  "https://www.w3.org/ns/activitystreams",</span>
+  <span class="prefix">"@graph":</span> [{
+    "type":      "Like",
+    "actor":     <mark>"http://ivydom.com/profile/#me"</mark>,
+    "object":    "https://www.meetup.com/FCCFullStack2019/#this",
+    "published": "2019-11-16T18:00:00Z"
+  },{
+    "type":      "Like",
+    "actor":     <mark>"https://example.org/people/alice#me"</mark>,
+    "object":    "https://www.meetup.com/FCCFullStack2019/#this",
+    "published": "2019-11-16T18:20:00Z"
+  }]
+}</code></pre>
+  </div>
+
+  <div class="slide" id="devx-first">
+    <h2>
+      SoLiD 若想成功必须重视<em>开发者体验</em>
+    </h2>
+    <ul>
+      <li class="next">
+        前端开发者构建炫酷的应用界面和用户体验
+      </li>
+      <li class="next">
+        联合用户体验设计师才能将 SoLiD 带给普罗大众
+      </li>
+      <li class="next">
+        赋能开发者等同于赋能我们自己
+      </li>
+    </ul>
+  </div>
+
+  <div class="slide" id="complicated">
+    <h2>
+      SoLiD 开发体验：从学术化到工程化
+    </h2>
+    <blockquote>
+      <p class="next">
+        开发者普遍讨厌 RDF，因为 RDF 既恶心又复杂<br>
+        现实可能更糟糕
+      </p>
+      <p class="next">
+        RDF 简化了复杂的管理成本<br>
+        RDF 让开发者处理现实世界中最复杂的数据<br>
+      </p>
+      <cite><a href="http://book.validatingrdf.com/bookHtml005.html">Dan Brickley &amp; Libby Miller</a></cite>
+    </blockquote>
+  </div>
+
+  <div class="slide" id="from-turtle-to-jsonld">
+    <h2>
+      From Turtle to JSON-LD
+    </h2>    
+    <figure class="cover width ">
+      <img src="images/from-turtle-to-jsonld.png" alt="[the Solid logo]" />
+    </figure>
+  </div>  
+
+  <div class="cover slide" id="state-of-js">
+    <h2>
+      现在的前端 Player 喜欢的东西<br>
+    </h2>
+    <ul>
+      <li class="next label" style="top: 310px;">React</li>
+      <li class="next label" style="top: 260px; left: 330px;">Vue.js</li>
+      <li class="next label" style="top: 280px; left: 520px;">Angular</li>
+    </ul>
+    <figure class="cover width">
+      <img src="images/cool-kids.jpg" alt="">
+      <figcaption>
+        ©2011 <a href="https://www.flickr.com/photos/lolasophia/5607432821/">smr+lsh</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="cover slide" id="react">
+    <h2>
+      SoLiD 兼容了 React 生态
+    </h2>
+    <pre><code>&lt;LoggedIn&gt;
+  &lt;p&gt;Welcome, <mark>&lt;Value src="user.firstName"/&gt;</mark>&lt;/p&gt;
+  <span class="next"><mark>&lt;Image src="user.image" defaultSrc="profile.svg"/&gt;</mark></span>
+  <span class="next">&lt;ul&gt;
+    &lt;li&gt;<mark>&lt;Link href="user.inbox"&gt;Your inbox&lt;/Link&gt;</mark>&lt;/li&gt;
+    &lt;li&gt;&lt;Link href="user.homepage"&gt;Your homepage&lt;/Link&gt;&lt;/li&gt;
+  &lt;/ul&gt;</span>
+  <span class="next">&lt;h2&gt;Your friends&lt;/h2&gt;
+  <mark>&lt;List src="user.friends.firstName"/&gt;</mark></span>
+&lt;/LoggedIn&gt;</code></pre>
+  </div>
+
+  <div class="cover slide" id="react">
+      <h2>
+        RDF.js VS LD-Flex
+      </h2>
+      <figure class="cover width margin">
+        <img src="images/rdfjs-vs-ldflex.png" alt="">
+      </figure>
+  </div>
+
+  <div class="cover slide" id="react">
+    <h2>
+      学习 SoLiD
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/solid-roadmap.jpg" alt="">
+    </figure>
+  </div>
+
+  <div class="toc slide" id="toc-developer-experience">
+    <ul>
+      <li><a href="#toc-universality">Web 的原初构想</a></li>
+      <li><a href="#toc-apps-data-people">SoLiD 对应用、数据和用户之间关系的变革</a></li>
+      <li><a href="#toc-developer-experience">开发者体验</a></li>
+      <li class="current"><a href="#toc-developer-experience">Web 的未来</a></li>
+    </ul>
+  </div>
+
+  <div class="cover slide" id="web-history">
+    <h2>
+      先看看历史
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/web-history.png" alt="">
+    </figure>
+  </div>  
+
+  <div class="cover slide" id="id-data">
+    <h2>
+      身份和数据主权之争
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/id-data.png" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="human-history">
+    <h2>
+      数据民主之路
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/data-sover.png" alt="">
+    </figure>
+  </div>  
+
+  <div class="cover slide" id="human-history">
+    <h2>
+      数据民主之路
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/humanbeing.png" alt="">
+    </figure>
+  </div>
+
+  <div class="cover slide" id="human-history">
+    <h2>
+      蒸汽记忆 | Steamory
+    </h2>
+    <figure class="cover width margin">
+      <img src="images/steamory-doing.png" alt="">
+    </figure>
+  </div>
+
+  <div class="toc slide" id="recap">
+    <ul>
+      <li><a href="#toc-universality">Web 的原初构想</a></li>
+      <li><a href="#toc-apps-data-people">SoLiD 对应用、数据和用户之间关系的变革</a></li>
+      <li><a href="#toc-developer-experience">开发者体验</a></li>
+      <li><a href="#toc-developer-experience">Web 的未来</a></li>  
+    </ul>
+  </div>
+
+  <div class="text slide" id="kay">
+    <blockquote>
+      <p>The best way to predict<br> the future is to invent it.</p>
+      <cite>Alan Kay</cite>
+    </blockquote>
+    <figure class="cover width">
+      <img class="faded" src="images/alan-kay.jpg" alt="[photo of Alan Kay]">
+      <figcaption>
+        ©2008 <a href="https://www.flickr.com/photos/jeanbaptisteparis/3098599318/">jeanbaptisteparis</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="text slide" id="barlow">
+    <blockquote>
+      <p>The best way to invent<br> the future is to predict it.</p>
+      <cite>John Perry Barlow</cite>
+    </blockquote>
+    <figure class="cover width">
+      <img class="faded" src="images/john-perry-barlow.jpg" alt="[photo of John Perry Barlow]">
+      <figcaption>
+        ©2007 <a href="https://www.flickr.com/photos/joi/835393447/">Joi Ito</a>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="cover slide" id="end">
+    <figure class="cover width margin">
+      <img style="margin-top:88px" src="images/qrcode.png" alt="">
+    </figure>
+    <h2>Rust、跨链到 Web3 的开源世界<br> <em>万维网之父的数据主权革命</em></h2>
+    <p class="author" style="margin-left:-6px"><a href="http://ivydom.com">@谢扬</a></p>
+  </div>
+
+  <footer>
+    <p class="badge"><a href="https://github.com/leinue/solid-fcc-chengdu-2019">View on GitHub</a></p>
+    <p class="license">
+      ©2019 <a href="http://ivydom.com/">谢扬</a> –
+      Except where otherwise noted,
+      the content of these slides is
+      licensed under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>.
+    </p>
+  </footer>
+  <script src="scripts/shower.min.js"></script>
+</body>
+</html>
